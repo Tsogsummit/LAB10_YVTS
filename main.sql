@@ -1,0 +1,18 @@
+DROP DATABASE IF EXISTS mydatabase;
+CREATE DATABASE mydatabase;
+
+USE mydatabase;
+
+CREATE TABLE electron_baraa (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE tavilga (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CRAETE TABLE 
