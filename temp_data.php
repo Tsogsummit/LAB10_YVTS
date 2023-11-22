@@ -1,15 +1,6 @@
-<html>
-<head>
-    <title>Search Data</title>
-</head>
-<body>
-    <h1>Search Data</h1>
-    <form action="searchdata.php" method="post">
-        <input type="text" name="search" placeholder="Search">
-        <input type="submit" value="Search">
-    </form>
-    <?php
-        error_reporting(E_ALL);
+<?php if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    $fahrenheit = $_GET['fahrenheit'];
+    error_reporting(E_ALL);
         ini_set('display_errors', '1');
 
         $conn = mysqli_connect("localhost", "root", "", "HouseholdDatabase");
@@ -18,7 +9,7 @@
         }
 
         if (isset($_POST['search'])) {
-            $searchq = $_POST['search'];
+            $searchq = $fahrenheit;
             $searchq = mysqli_real_escape_string($conn, $searchq);
             $searchq = preg_replace("/[^\w\s'-]/", "", $searchq);
 
@@ -47,11 +38,10 @@
             }
 
 
+            // echo $output;
+            printf($output);
             echo $output;
         }
+    
+} 
 ?>
-
-
-
-</body>
-</html>
