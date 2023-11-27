@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <title>
+            Search data
+        </title>
+    </head>
+    <body>
+        <script>
+            function loadXMLDoc() {
+                var xhttp = new XMLHttpRequest()
+                xhttp.onreadystatechange = function () {
+                    let result_cont = document.getElementById('result_cont');
+                    let result = document.getElementById('result');
+                    if (this.readyState == 4 && this.status == 200) {
+                        result.innerHTML = this.responseText;
+                        result_cont.style.display = "block";
+                    } 
+                    else {
+                        result_cont.style.display = "none";
+                    }
+                }
+                var f_value = document.getElementById('search').value;
+                xhttp.open('GET', 'searchdata.php?search=' + f_value, true);
+                xhttp.send();
+            }
+            function loadXMLDocDetail() {
+                var xhttp = new XMLHttpRequest()
+                xhttp.onreadystatechange = function () {
+                    let result_cont = document.getElementById('result_cont');
+                    let result = document.getElementById('result');
+                    if (this.readyState == 4 && this.status == 200) {
+                        result.innerHTML = this.responseText;
+                        result_cont.style.display = "block";
+                    } 
+                    else {
+                        result_cont.style.display = "none";
+                    }
+                }
+                var f_value = document.getElementById('search').value;
+            }
+        </script>
+        <h1>Search Data</h1>
+        <div>
+            <input type="text" name="search" id="search" placeholder="Search">
+            <button onclick="loadXMLDoc()">sumbit</button>
+        </div>
+        <div id="result_cont" style="display: none;">
+            <span id="result"></span>
+        </div>
+    </body>
+</html>

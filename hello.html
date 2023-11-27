@@ -1,0 +1,65 @@
+<html>
+
+<head></head>
+
+<body>
+    <style>
+        .snow_flake {
+            /* content: "\2744"; */
+            height: 20px;
+            width: 20px;
+        }
+
+        #snow_flakes{
+            height: 50px;
+        }
+    </style>
+    <script>
+        function loadXMLDoc() {
+            var xhttp = new XMLHttpRequest()
+            xhttp.onreadystatechange = function () {
+                let result_cont = document.getElementById('result_cont');
+                let result = document.getElementById('result');
+                if (this.readyState == 4 && this.status == 200) {
+
+                    result.innerHTML = this.responseText;
+                    result_cont.style.display = "block";
+
+                    /// snow flakes based on minus degree's count
+                    var sflakes = document.getElementById('snow_flakes');
+                    sflakes.innerHTML = '';
+                    
+                    var temp_val = parseInt(this.responseText);                    
+                    var flakes_html = '';
+                    for (let i = 0; i < temp_val * -1; i++) {
+                        var flake = '<span class="snow_flake"> &#10052; </span>'
+                        flakes_html += flake;
+                    }
+
+                    sflakes.innerHTML = flakes_html;
+                } else {
+                    result_cont.style.display = "none";
+                }
+            }
+
+            var f_value = document.getElementById('f_input').value;
+            xhttp.open('GET', 'hello.php?fahrenheit=' + f_value, true);
+            xhttp.send();
+        }
+    </script>
+
+    convert to celsuis
+    <div>
+        <input id="f_input" type="number" />
+        <button onclick="loadXMLDoc()">calc</button>
+    </div>
+    <div id="result_cont" style="display: none;">
+        Үр дүн <span id="result"></span>C
+    </div>
+    <div id="snow_flakes">
+
+    </div>
+
+</body>
+
+</html>
