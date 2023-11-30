@@ -20,14 +20,15 @@
                     }
                 }
                 var f_value = document.getElementById('search').value;
-                xhttp.open('GET', 'searchdata.php?search=' + f_value, true);
+                var f_table = document.getElementById('talbe').value;
+                xhttp.open('GET', 'searchdata.php?search=' + f_value + '&table=' + f_table, true);
                 xhttp.send();
             }
-            function loadXMLDocDetail() {
+            function loadXMLDocDetail(a , b){
                 var xhttp = new XMLHttpRequest()
                 xhttp.onreadystatechange = function () {
-                    let result_cont = document.getElementById('result_cont');
-                    let result = document.getElementById('result');
+                    let result_cont = document.getElementById('res_cont');
+                    let result = document.getElementById('res');
                     if (this.readyState == 4 && this.status == 200) {
                         result.innerHTML = this.responseText;
                         result_cont.style.display = "block";
@@ -36,11 +37,22 @@
                         result_cont.style.display = "none";
                     }
                 }
-                var f_value = document.getElementById('search').value;
+                // var f_value = document.getElementById('id_res').value;
+                // var f_table = document.getElementById('table_id').value;
+                console.log(a);
+                if(b == '1') var f_table = 'users';
+                else var f_table = 'items';
+                xhttp.open('GET', 'detail.php?id=' + a + "&table=" + f_table, true);
+                xhttp.send();
             }
+
         </script>
         <h1>Search Data</h1>
         <div>
+            <select name="talbe" id="talbe">
+                <option value="users">Users</option>
+                <option value="items">Items</option>
+            </select>
             <input type="text" name="search" id="search" placeholder="Search">
             <button onclick="loadXMLDoc()">sumbit</button>
         </div>

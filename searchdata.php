@@ -8,7 +8,9 @@
             die("Connection failed: " . $conn->connect_error);
         }
         
-        $search = $_GET['search'];
+        $original = $_GET['search'];
+        $table = $_GET['table'];
+        $search = ucwords($original);
         if (!empty($search)) {
             $searchq = $search;
             $searchq = mysqli_real_escape_string($conn, $searchq);
@@ -16,24 +18,36 @@
 
             echo "Sanitized Search Query: $searchq<br>";
 
-
-            $query = mysqli_query($conn, "
-                SELECT Users.user_id, Items.item_id
-                FROM ItemUsage
-                JOIN Users ON ItemUsage.user_id = Users.user_id
-                JOIN Items ON ItemUsage.item_id = Items.item_id
-                WHERE Users.user_name LIKE '%$searchq%'
-                OR Items.item_name LIKE '%$searchq%'
-            ") or die(mysqli_error($conn));
+            if($table == "users")
+                $query = mysqli_query($conn, "
+                    SELECT *
+                    FROM $table
+                    WHERE user_name LIKE '%$searchq%'
+                ") or die(mysqli_error($conn));
+            else 
+                $query = mysqli_query($conn, "
+                    SELECT *
+                    FROM $table
+                    WHERE item_name LIKE '%$searchq%'
+                ") or die(mysqli_error($conn));
 
             $output = '';
 
+            $output .= '<div id="table_id">' . $table . '</div>';
 
             while ($row = mysqli_fetch_array($query)) {
-                $user_id = htmlspecialchars($row['user_id']);
-                $item_id = htmlspecialchars($row['item_id']);
-                $output .= '<div>User: ' . $user_id . ' | Item: ' . $item_id . '</div>';
-                $output .= '<button onclick="loadXMLDocDetail()">Details</button>';
+                if($table == "users"){
+                    $output .= '<div id="id_res">' . htmlspecialchars($row['user_id']) . '</div>';
+                    $output .= '<div>' . htmlspecialchars($row['user_name']) . '</div>';
+                    $output .= '<div id="res_cont"> <span id="res"> </span> </div>';
+                    $output .= '<button onclick="loadXMLDocDetail(' . htmlspecialchars($row['user_id']) . ', 1' . ')">Details</button>';
+                }
+                else{
+                    $output .= '<div id="id_res">' . htmlspecialchars($row['item_id']) . '</div>';
+                    $output .= '<div>' . htmlspecialchars($row['item_name']) . '</div>';
+                    $output .= '<div id="res_cont"> <span id="res"> </span> </div>';
+                    $output .= '<button onclick="loadXMLDocDetail(' . htmlspecialchars($row['item_id']) . ', 2' . ')">Details</button>';
+                } 
 
             }
             
